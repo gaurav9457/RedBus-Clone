@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="RedBusApplication" basedir="." default="deployApp">
+
+	<property name="srcdir" value="src" />
+	<property name="libsrcdir" value="${basedir}/lib" />
+	<property name="libdir" value="${basedir}/WebContent/WEB-INF/lib" />
+	<property name="bindir" value="${basedir}/WebContent/WEB-INF/classes" />
+	<property name="gensrcdir" value="src" />
+	
+	<property name="db.url" value="jdbc:mysql://192.168.57.5:3306/rajat" />
+	<property name="db.driver" value="com.mysql.jdbc.Driver" />
+	<property name="db.user" value="rajat" />
+	<property name="db.password" value="AbCdEfG1" />
+	
+	
+
+	<path id="cp">
+		<fileset dir="${libsrcdir}"/>
+	</path>
+	
+	<target name="clean">
+		<delete dir="WebContent/WEB-INF/classes"/>
+		<delete dir="dist"/>
+		<delete dir="D:/dev/jboss-4.0.2/server/default/deploy/RedBusApplication.war"/>
+		<delete dir="dist/RedBusApplication.war"/>
+	</target>
+	
+	<target name="init" depends="clean">
+		<mkdir dir="WebContent/WEB-INF/classes" /> 
+		<mkdir dir="dist" />
+	</target>
+	
+	<target name="compile" depends="init">
+		<javac destdir="WebContent/WEB-INF/classes" debug="true" srcdir="${srcdir}" includeantruntime="false">
+		<classpath refid="cp"/>
+		</javac>
+		<copy todir="${bindir}">
+			<fileset dir="${srcdir}">
+				<include name="**/*.properties" />
+				<include name="*.cfg.xml" />
+				<include name="**/*.hbm.xml" />
+			</fileset>
+		</copy>
+		<copy todir="${libdir}">
+			<fileset dir="${libsrcdir}" />
+		</copy>
+	</target>
+	
+	<target name="war" depends="compile">
+		<war destfile="dist/RedBusApplication.war" webxml="WebContent/WEB-INF/web.xml">
+			<fileset dir="${basedir}/WebContent"/>
+			<lib dir="${libdir}"/>
+			<classes dir="${bindir}"/>
+		</war>
+	</target>	
+	
+	<target name="deployApp" depends="war">
+		<copy todir="D:/dev/jboss-4.0.2/server/default/deploy" file="dist/RedBusApplication.war">
+		</copy>
+	</target>
+	
+	<target name="gen-hbm">
+		<taskdef name="middlegen" classname="middlegen.MiddlegenTask" classpathref="cp" />
+		<middlegen appname="RedBusApplicationHB" prefsdir="${srcdir}" gui="false" databaseurl="${db.url}" driver="${db.driver}" username="${db.user}" password="${db.password}" schema="" catalog="" includeViews="false">
+			
+
+			<table generate="true" name="users" />
+			<table generate="true" name="boarding_points" />
+			<table generate="true" name="bookings_data" />
+			<table generate="true" name="bus_info" />
+			<table generate="true" name="buses" />
+			<table generate="true" name="buses_images" />
+			<table generate="true" name="dropping_points" />
+			
+			<!-- Plugins -->
+			<hibernate destination="${basedir}\${srcdir}" package="com.redbus.bean.pojo" standardGeneratorScheme="increment"  javaTypeMapper="middlegen.plugins.hibernate.HibernateJavaTypeMapper" />
+		</middlegen>
+	</target>
+			
+	<target name="gen-java" depends="gen-hbm">
+		<taskdef name="hibernatetool" classname="org.hibernate.tool.ant.HibernateToolTask" classpathref="cp" />
+
+	    <hibernatetool destdir="${basedir}\${srcdir}" templatepath="${hbm.template.path}">
+	        <classpath>
+	            <path refid="cp" />
+	        </classpath>
+	
+	        <configuration>
+	            <fileset dir="${basedir}\${srcdir}">
+	                <include name="**/*.hbm.xml" />
+	            </fileset>
+	        </configuration>
+	        	
+	       	<hbm2java/>
+	     </hibernatetool>
+	</target>	
+	
+</project>

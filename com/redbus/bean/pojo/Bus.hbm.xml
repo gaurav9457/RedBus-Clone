@@ -1,0 +1,177 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.2
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<class 
+    name="com.redbus.bean.pojo.Bus" 
+    table="buses"
+>
+
+    <id
+        name="busId"
+        type="java.lang.Long"
+        column="busId"
+    >
+    
+        <generator class="increment" />
+    </id>
+
+    <property
+        name="busName"
+        type="java.lang.String"
+        column="busName"
+        not-null="true"
+        length="255"
+    />
+    <property
+        name="route"
+        type="java.lang.String"
+        column="route"
+        not-null="true"
+        length="255"
+    />
+    <property
+        name="busFrom"
+        type="java.lang.String"
+        column="busFrom"
+        not-null="true"
+        length="255"
+    />
+    <property
+        name="busTo"
+        type="java.lang.String"
+        column="busTo"
+        not-null="true"
+        length="255"
+    />
+    <property
+        name="startTime"
+        type="java.sql.Time"
+        column="startTime"
+        not-null="true"
+        length="8"
+    />
+    <property
+        name="endTime"
+        type="java.sql.Time"
+        column="endTime"
+        not-null="true"
+        length="8"
+    />
+    <property
+        name="isActive"
+        type="java.lang.String"
+        column="isActive"
+        not-null="true"
+        length="1"
+    />
+    <property
+        name="modifiedBy"
+        type="java.lang.Long"
+        column="modifiedBy"
+        length="20"
+    />
+    <property
+        name="modifiedAt"
+        type="java.sql.Date"
+        column="modifiedAt"
+        length="10"
+    />
+    <property
+        name="createdBy"
+        type="java.lang.Long"
+        column="createdBy"
+        length="20"
+    />
+    <property
+        name="createdAt"
+        type="java.sql.Timestamp"
+        column="createdAt"
+        not-null="true"
+        length="19"
+    />
+
+    <!-- Associations -->
+  
+    <!-- bi-directional one-to-many association to BusInfo -->
+    <set
+        name="busInfos"
+        lazy="true"
+        inverse="true"
+		cascade="none"
+    >
+        <key>
+            <column name="busID" />
+        </key>
+        <one-to-many 
+            class="com.redbus.bean.pojo.BusInfo"
+        />
+    </set>
+    <!-- bi-directional one-to-many association to BookingsData -->
+    <set
+        name="bookingsDatas"
+        lazy="true"
+        inverse="true"
+		cascade="none"
+    >
+        <key>
+            <column name="busId" />
+        </key>
+        <one-to-many 
+            class="com.redbus.bean.pojo.BookingsData"
+        />
+    </set>
+    <!-- bi-directional one-to-many association to BoardingPoint -->
+    <set
+        name="boardingPoints"
+        lazy="true"
+        inverse="true"
+		cascade="none"
+    >
+        <key>
+            <column name="busId" />
+        </key>
+        <one-to-many 
+            class="com.redbus.bean.pojo.BoardingPoint"
+        />
+    </set>
+    <!-- bi-directional one-to-many association to DroppingPoint -->
+    <set
+        name="droppingPoints"
+        lazy="true"
+        inverse="true"
+		cascade="none"
+    >
+        <key>
+            <column name="busId" />
+        </key>
+        <one-to-many 
+            class="com.redbus.bean.pojo.DroppingPoint"
+        />
+    </set>
+    <!-- bi-directional one-to-many association to BusesImage -->
+    <set
+        name="busesImages"
+        lazy="true"
+        inverse="true"
+		cascade="none"
+    >
+        <key>
+            <column name="busId" />
+        </key>
+        <one-to-many 
+            class="com.redbus.bean.pojo.BusesImage"
+        />
+    </set>
+
+</class>
+</hibernate-mapping>

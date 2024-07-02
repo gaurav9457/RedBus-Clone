@@ -1,0 +1,126 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.2
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<class 
+    name="com.redbus.bean.pojo.BookingsData" 
+    table="bookings_data"
+>
+
+    <id
+        name="bookingId"
+        type="java.lang.Long"
+        column="bookingId"
+    >
+    
+        <generator class="increment" />
+    </id>
+
+    <property
+        name="bookingDate"
+        type="java.sql.Date"
+        column="bookingDate"
+        not-null="true"
+        length="10"
+    />
+    <property
+        name="gender"
+        type="java.lang.String"
+        column="gender"
+        not-null="true"
+        length="255"
+    />
+    <property
+        name="totalPrice"
+        type="java.lang.Integer"
+        column="totalPrice"
+        not-null="true"
+        length="11"
+    />
+    <property
+        name="seats"
+        type="java.lang.String"
+        column="seats"
+        not-null="true"
+        length="255"
+    />
+    <property
+        name="isActive"
+        type="java.lang.String"
+        column="isActive"
+        not-null="true"
+        length="1"
+    />
+    <property
+        name="modifiedBy"
+        type="java.lang.Long"
+        column="modifiedBy"
+        length="20"
+    />
+    <property
+        name="modifiedAt"
+        type="java.sql.Date"
+        column="modifiedAt"
+        length="10"
+    />
+    <property
+        name="createdBy"
+        type="java.lang.Long"
+        column="createdBy"
+        not-null="true"
+        length="20"
+    />
+    <property
+        name="createdAt"
+        type="java.sql.Timestamp"
+        column="createdAt"
+        not-null="true"
+        length="19"
+    />
+
+    <!-- Associations -->
+  
+    <!-- bi-directional many-to-one association to Bus -->
+    <many-to-one
+        name="bus"
+        class="com.redbus.bean.pojo.Bus"
+        not-null="true"
+    >
+        <column name="busId" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to User -->
+    <many-to-one
+        name="user"
+        class="com.redbus.bean.pojo.User"
+        not-null="true"
+    >
+        <column name="userId" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to BoardingPoint -->
+    <many-to-one
+        name="boardingPoint"
+        class="com.redbus.bean.pojo.BoardingPoint"
+        not-null="true"
+    >
+        <column name="pickupPoint" />
+    </many-to-one>
+    <!-- bi-directional many-to-one association to DroppingPoint -->
+    <many-to-one
+        name="droppingPoint"
+        class="com.redbus.bean.pojo.DroppingPoint"
+        not-null="true"
+    >
+        <column name="dropPoint" />
+    </many-to-one>
+
+</class>
+</hibernate-mapping>

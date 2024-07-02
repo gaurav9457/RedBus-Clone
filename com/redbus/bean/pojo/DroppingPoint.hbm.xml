@@ -1,0 +1,95 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.2
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<class 
+    name="com.redbus.bean.pojo.DroppingPoint" 
+    table="dropping_points"
+>
+
+    <id
+        name="id"
+        type="java.lang.Long"
+        column="id"
+    >
+    
+        <generator class="increment" />
+    </id>
+
+    <property
+        name="droppingPoint"
+        type="java.lang.String"
+        column="droppingPoint"
+        not-null="true"
+        length="255"
+    />
+    <property
+        name="isActive"
+        type="java.lang.String"
+        column="isActive"
+        not-null="true"
+        length="1"
+    />
+    <property
+        name="modifiedBy"
+        type="java.lang.Long"
+        column="modifiedBy"
+        length="20"
+    />
+    <property
+        name="modifiedAt"
+        type="java.sql.Date"
+        column="modifiedAt"
+        length="10"
+    />
+    <property
+        name="createdBy"
+        type="java.lang.Long"
+        column="createdBy"
+        not-null="true"
+        length="20"
+    />
+    <property
+        name="createdAt"
+        type="java.sql.Timestamp"
+        column="createdAt"
+        not-null="true"
+        length="19"
+    />
+
+    <!-- Associations -->
+  
+    <!-- bi-directional many-to-one association to Bus -->
+    <many-to-one
+        name="bus"
+        class="com.redbus.bean.pojo.Bus"
+        not-null="true"
+    >
+        <column name="busId" />
+    </many-to-one>
+    <!-- bi-directional one-to-many association to BookingsData -->
+    <set
+        name="bookingsDatas"
+        lazy="true"
+        inverse="true"
+		cascade="none"
+    >
+        <key>
+            <column name="dropPoint" />
+        </key>
+        <one-to-many 
+            class="com.redbus.bean.pojo.BookingsData"
+        />
+    </set>
+
+</class>
+</hibernate-mapping>
